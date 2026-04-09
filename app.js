@@ -355,8 +355,34 @@ function renderStep6() {
   }
 }
 
+// ---------- Theme toggle ----------
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  const icon = document.getElementById("theme-icon");
+  const label = document.getElementById("theme-label");
+  if (theme === "light") {
+    icon.innerHTML = "&#9728;"; // sun
+    label.textContent = "Light";
+  } else {
+    icon.innerHTML = "&#9790;"; // moon
+    label.textContent = "Dark";
+  }
+  try { localStorage.setItem("mi-patterns-theme", theme); } catch (e) {}
+}
+
+function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem("mi-patterns-theme"); } catch (e) {}
+  applyTheme(saved === "light" ? "light" : "dark");
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    applyTheme(current === "light" ? "dark" : "light");
+  });
+}
+
 // ---------- Wire up buttons ----------
 function init() {
+  initTheme();
   render();
 
   document.getElementById("btn-detect").addEventListener("click", () => {
