@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MI Patterns — Naming Convention Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark">MI</div>
+      <div>
+        <h1>Patterns</h1>
+        <p class="tagline">Turn campaign naming conventions into analyzable dimensions</p>
+      </div>
+    </div>
+    <div class="stepper" id="stepper">
+      <div class="step" data-step="1"><span>1</span>Raw data</div>
+      <div class="step" data-step="2"><span>2</span>Detect pattern</div>
+      <div class="step" data-step="3"><span>3</span>Label positions</div>
+      <div class="step" data-step="4"><span>4</span>Deconstruct</div>
+      <div class="step" data-step="5"><span>5</span>Harmonize</div>
+      <div class="step" data-step="6"><span>6</span>Analyze</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- STEP 1: Raw Data -->
+    <section class="panel active" id="panel-1">
+      <div class="panel-head">
+        <h2>Step 1 &mdash; Raw data from multiple sources</h2>
+        <p>Three ad platforms are feeding campaign names into MI. Each source uses the same internal naming convention, but the raw data has no structured dimensions like <em>company</em>, <em>audience</em>, or <em>objective</em>.</p>
+      </div>
+      <div class="sources" id="sources-view"></div>
+      <div class="panel-foot">
+        <div class="hint">Click <strong>Detect pattern</strong> to let MI scan the campaign names and figure out the delimiter and number of positions being used.</div>
+        <button class="btn primary" id="btn-detect">Detect pattern &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 2: Detect Pattern -->
+    <section class="panel" id="panel-2">
+      <div class="panel-head">
+        <h2>Step 2 &mdash; Pattern detected</h2>
+        <p>MI scans every campaign name across all sources, tests common delimiters, and identifies the most consistent structure.</p>
+      </div>
+
+      <div class="detect-grid">
+        <div class="detect-card">
+          <div class="detect-label">Delimiter</div>
+          <div class="detect-value" id="detected-delimiter">&mdash;</div>
+          <div class="detect-sub">Found in <span id="delimiter-coverage">0</span>% of campaigns</div>
+        </div>
+        <div class="detect-card">
+          <div class="detect-label">Positions</div>
+          <div class="detect-value" id="detected-positions">&mdash;</div>
+          <div class="detect-sub">Consistent across matched rows</div>
+        </div>
+        <div class="detect-card">
+          <div class="detect-label">Matched campaigns</div>
+          <div class="detect-value" id="matched-count">&mdash;</div>
+          <div class="detect-sub"><span id="unmatched-count">0</span> do not match the pattern</div>
+        </div>
+      </div>
+
+      <div class="sample-breakdown">
+        <div class="sample-title">Sample: what the detector sees</div>
+        <div class="sample-row" id="sample-row"></div>
+      </div>
+
+      <div class="panel-foot">
+        <div class="hint">The pattern is <code>[value]<span class="delim-hl">|</span>[value]<span class="delim-hl">|</span>[value]</code>. Now tell MI what each position represents.</div>
+        <button class="btn secondary" data-back="1">&larr; Back</button>
+        <button class="btn primary" id="btn-label">Label positions &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 3: Label Positions -->
+    <section class="panel" id="panel-3">
+      <div class="panel-head">
+        <h2>Step 3 &mdash; Name the positions</h2>
+        <p>MI has guessed labels by sampling the values at each position. Review them and edit if needed. These will become brand new dimensions in your dataset.</p>
+      </div>
+
+      <div class="labeling" id="labeling-view"></div>
+
+      <div class="panel-foot">
+        <div class="hint">These labels become the names of the dimensions that MI will populate.</div>
+        <button class="btn secondary" data-back="2">&larr; Back</button>
+        <button class="btn primary" id="btn-deconstruct">Deconstruct campaigns &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 4: Deconstruct -->
+    <section class="panel" id="panel-4">
+      <div class="panel-head">
+        <h2>Step 4 &mdash; Deconstruct every matching campaign</h2>
+        <p>MI splits each matched campaign name at the delimiter and tags each piece with its labeled position.</p>
+      </div>
+
+      <div class="deconstruct-view" id="deconstruct-view"></div>
+
+      <div class="panel-foot">
+        <div class="hint">Each chip is a value extracted for a dimension. Values from all sources will be combined next.</div>
+        <button class="btn secondary" data-back="3">&larr; Back</button>
+        <button class="btn primary" id="btn-harmonize">Extract &amp; harmonize &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 5: Harmonize -->
+    <section class="panel" id="panel-5">
+      <div class="panel-head">
+        <h2>Step 5 &mdash; Harmonized dimensions</h2>
+        <p>Extracted values become real columns. Data from every source is now unified on the same set of dimensions &mdash; even though those dimensions did not exist in any source to begin with.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="harmonized" id="harmonized-table"></table>
+      </div>
+
+      <div class="panel-foot">
+        <div class="hint">You can now analyze combined data across sources by these new dimensions.</div>
+        <button class="btn secondary" data-back="4">&larr; Back</button>
+        <button class="btn primary" id="btn-analyze">Analyze by new dimensions &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 6: Analyze -->
+    <section class="panel" id="panel-6">
+      <div class="panel-head">
+        <h2>Step 6 &mdash; Analyze by dimensions that did not exist before</h2>
+        <p>The same raw campaign strings now power cross-source breakdowns &mdash; the core value of the Patterns feature.</p>
+      </div>
+
+      <div class="analysis-grid" id="analysis-grid"></div>
+
+      <div class="panel-foot">
+        <div class="hint">That&rsquo;s the Patterns workflow: detect &rarr; label &rarr; deconstruct &rarr; harmonize &rarr; analyze.</div>
+        <button class="btn secondary" data-back="5">&larr; Back</button>
+        <button class="btn primary" id="btn-restart">Restart demo</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
